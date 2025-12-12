@@ -119,7 +119,7 @@ function addLetter(letter) {
 function deleteLetter() {
     logDebug(`deleteLetter() called`, 'info');
     
-    //check if nothign to delete
+    //check if nothing to delete
     if (currentTile <= 0) {
         logDebug(`No letters to delete`, 'error');
         return;
@@ -132,21 +132,86 @@ function deleteLetter() {
     //get tile to delete
     const tile = tiles[currentTile];
     
-    // Clear
+    //clear
     tile.textContent = '';
     
     // remove the 'filled' CSS class
     tile.classList.remove('filled');
 }
+//TODO: Implement submitGuess function
+function submitGuess() {
 
-// TODO: Implement submitGuess function
-// function submitGuess() {
-//     // Your code here!
-// }
+    if (currentTile < 5) {
+        return;
+    }
+    
+    //get the current guess
+    const guess = getCurrentWord();
+    const row = rows[currentRow];
+    const tiles = row.querySelectorAll('.tile');
+    const result = checkGuess(guess, tiles);
+    
+    //hardcoded taget word due to failure to make it a glbal variable 
+    if (guess === "HELLO") {
+        logDebug(`Correct! You won!`, 'success');
+        gameOver = true;
+        return;
+    }
+    currentRow++;
+    currentTile = 0;
 
-// TODO: Implement checkGuess function (the hardest part!)
-// function checkGuess(guess, tiles) {
-//     // Your code here!
-//     // Remember: handle duplicate letters correctly
-//     // Return the result array
-// }
+    if (currentRow >= 5) {
+        logDebug(`Game over! The word was: ${targetWord}`, 'error');
+        gameOver = true;
+        return;
+    }
+    
+    logDebug(`Moving to row ${currentRow}`, 'info');
+}
+//TODO Impliment checkGuess function
+function checkGuess(guess, tiles) {
+    logDebug(`checkGuess("${guess}") called`, 'info');
+    
+    const result = [];
+    //I wasn't sure how to get targetword to be a global variable so its made twice this is bad code design but It works
+    const targetWord = 'HELLO';
+    const targetLetters = targetWord.split('');
+    const guessLetters = guess.split('');
+    
+    //track which letters in target have been matched
+    const used = new Array(5).fill(false);
+    
+    // pass through and check correct (duplicate correct letters cause error)
+    for (let i = 0; i < 5; i++) {
+        if (guessLetters[i] === targetLetters[i]) {
+            result[i] = 'correct';
+            tiles[i].classList.add('correct');
+            used[i] = true;
+        }
+    }
+    //second pass to get yellow and gray
+    for (let i = 0; i < 5; i++) {
+        if (result[i] === 'correct') {
+            continue; // Already marked as correct
+        }
+        //set a variable to check for correct words in wrong position
+        let foundIndex = -1;
+        for (let j = 0; j < 5; j++) {
+            if (!used[j] && guessLetters[i] === targetLetters[j]) {
+                foundIndex = j;
+                break;
+            }
+        }
+        
+        if (foundIndex !== -1) {
+            result[i] = 'present';
+            tiles[i].classList.add('present');
+            used[foundIndex] = true;
+        } else {
+            result[i] = 'absent';
+            tiles[i].classList.add('absent');
+        }
+    }
+    
+    return result;
+}
