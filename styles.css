@@ -1,0 +1,98 @@
+/* WORDLE CSS STARTER */
+
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    color: #121212;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.game-container {
+    max-width: 500px;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+header h1 { 
+    text-align: center; 
+    font-size: 2.5rem; 
+    font-weight: bold; 
+    border-bottom: 1px solid var(--border-color); 
+    margin-bottom: 30px; 
+    padding-bottom: 15px; 
+}
+
+.game-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 30px;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    /* Remove margin-bottom: 8px; */
+}
+
+.tile {
+    width: 62px;
+    height: 62px;
+    border: 2px solid #d3d6da;
+    background-color: #ffffff;
+    
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    
+    transition: all 0.15s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #6e6e6e;
+    /* Add this for proper spacing: */
+    margin-top: 20px;
+}
+
+.tile:empty {
+    background-color: #f8f9fa;
+    border-style: dashed;
+}
+
+.tile:not(:empty) {
+    border-color: #878a8c;
+}
+.tile.correct {
+    background-color: #6aaa64;  /* Green - using hexadecimal color notation */
+    border-color: #6aaa64;
+    color: white;
+}
+
+.tile.present {
+    background-color: #c9b458;  /* Yellow - hex colors start with # */
+    border-color: #c9b458;
+    color: white;
+}
+
+.tile.absent {
+    background-color: #787c7e;  /* Gray - 6 digits for red, green, blue values */
+    border-color: #787c7e;
+    color: white;
+}

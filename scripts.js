@@ -67,20 +67,78 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ===== YOUR CHALLENGE: IMPLEMENT THESE FUNCTIONS =====
 
-// TODO: Add keyboard event listener
-// document.addEventListener("keydown", (event) => {
-//     // Your code here!
-// });
+document.addEventListener("keydown", (event) => {
+    if (gameOver) return;
+    
+    const key = event.key.toUpperCase();
+    
+    if (event.key === "Backspace") {
+        deleteLetter();
+        return;
+    }
+    
+    if (event.key === "Enter") {
+        submitGuess();
+        return;
+    }
+
+    if (key.length === 1 && key >= 'A' && key <= 'Z') {
+        addLetter(key);
+    }
+});
+
 
 // TODO: Implement addLetter function
-// function addLetter(letter) {
-//     // Your code here!
-// }
+function  addLetter(letter) {
+    logDebug('addLetter("${letter}") called', 'info');
+    
+    //check current row if filled
+    if (currentTile >= 5) {
+        logDebug("full row", 'error');
+        return;
+    }
+    
+    const row = rows[currentRow];
+    
+    const tiles = row.querySelectorAll('.tile');
+    
+    const tile = tiles[currentTile];
+    
+    tile.textContent = letter;
+    
+    tile.classList.add('filled');
+    
+    currentTile++;
+    
+    logDebug(`letter "${letter}" added at position ${currentTile - 1}`, 'success');
+    
+
+    logDebug(`current word: "${getCurrentWord()}"`, 'info');
+}
 
 // TODO: Implement deleteLetter function  
-// function deleteLetter() {
-//     // Your code here!
-// }
+function deleteLetter() {
+    logDebug(`deleteLetter() called`, 'info');
+    
+    //check if nothign to delete
+    if (currentTile <= 0) {
+        logDebug(`No letters to delete`, 'error');
+        return;
+    }
+
+    currentTile--;
+    
+    const row = rows[currentRow];
+    const tiles = row.querySelectorAll('.tile');
+    //get tile to delete
+    const tile = tiles[currentTile];
+    
+    // Clear
+    tile.textContent = '';
+    
+    // remove the 'filled' CSS class
+    tile.classList.remove('filled');
+}
 
 // TODO: Implement submitGuess function
 // function submitGuess() {
