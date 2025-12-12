@@ -89,31 +89,30 @@ document.addEventListener("keydown", (event) => {
 
 
 // TODO: Implement addLetter function
-function  addLetter(letter) {
-    logDebug('addLetter("${letter}") called', 'info');
+function addLetter(letter) {
+    logDebug(`addLetter("${letter}") called`, 'info');
     
-    //check current row if filled
+    //check full
     if (currentTile >= 5) {
-        logDebug("full row", 'error');
+        logDebug(`Row is full, cannot add more letters`, 'error');
         return;
     }
-    
+    //get current row
     const row = rows[currentRow];
-    
+    //get all tiles in that row
     const tiles = row.querySelectorAll('.tile');
-    
+    //get working tile
     const tile = tiles[currentTile];
-    
+    //input data
     tile.textContent = letter;
-    
+    //add the 'filled' CSS class to the tile
     tile.classList.add('filled');
-    
+    //move to next tile
     currentTile++;
     
-    logDebug(`letter "${letter}" added at position ${currentTile - 1}`, 'success');
-    
-
-    logDebug(`current word: "${getCurrentWord()}"`, 'info');
+    // extra error hadnling and testing
+    logDebug(`Letter "${letter}" added at position ${currentTile - 1}`, 'success');
+    logDebug(`Current word: "${getCurrentWord()}"`, 'info');
 }
 
 // TODO: Implement deleteLetter function  
